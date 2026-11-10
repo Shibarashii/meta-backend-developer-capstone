@@ -62,3 +62,7 @@ class AuthFlowTest(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('auth_token', response.data)
         self.assertEqual(self.client.post('/restaurant/api-token-auth/', creds).status_code, 200)
+
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {response.data['auth_token']}")
+        self.assertEqual(self.client.post('/auth/token/logout/').status_code, 204)
+        self.assertFalse(Token.objects.filter(key=response.data['auth_token']).exists())
