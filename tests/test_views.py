@@ -53,6 +53,13 @@ class BookingViewTest(APITestCase):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(Booking.objects.get().name, 'Ana')
 
+    def test_bearer_token_accepted(self):
+        user = User.objects.create_user('tester', password='Lemon!2026x')
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {Token.objects.create(user=user).key}')
+        self.assertEqual(self.client.get('/restaurant/booking/tables/').status_code, 200)
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer wrong')
+        self.assertEqual(self.client.get('/restaurant/booking/tables/').status_code, 401)
+
 
 class AuthFlowTest(APITestCase):
     def test_register_then_login(self):

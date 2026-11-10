@@ -22,8 +22,9 @@ User registration and authentication (djoser)
   GET    /auth/users/me/               (requires token)
   POST   /restaurant/api-token-auth/   {"username": "...", "password": "..."}  -> token
 
-Send the token on protected endpoints with the header:
+Send the token on protected endpoints with either header:
   Authorization: Token <your token>
+  Authorization: Bearer <your token>    (Insomnia: Auth tab -> Bearer Token)
 
 Menu API (reading is public, changes require a token)
   GET    /restaurant/menu/
